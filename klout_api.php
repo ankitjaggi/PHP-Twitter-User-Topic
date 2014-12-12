@@ -6,7 +6,10 @@ class klout_api
 
 	public function getKloutID($twitter_handle)
 	{
-		//$apikey='uchcyu5yveb5a4j5unpycbbu';
+		
+		if(strpos($twitter_handle, "@") !== false)
+			$twitter_handle=substr($twitter_handle, 1);
+		//echo $twitter_handle;
 		$id_url = 'http://api.klout.com/v2/identity.json/twitter?screenName='. $twitter_handle.'&key='.$this->apikey;
 		$json = file_get_contents($id_url);
 		$id = json_decode($json, TRUE);
@@ -29,14 +32,18 @@ class klout_api
 		$len=count($topics);
 		//echo $len;
 		echo "<br>";
+		echo "<table><tr>";
 		for($i=0;$i<$len;$i++)
 		{
-			echo "<strong>".$topics[$i]['displayName']."</strong>";
+			
+			echo "<td><center><strong>".$topics[$i]['displayName']."</strong></center><br>";
 			if($topics[$i]['imageUrl']!='http://kcdn3.klout.com/static/images/icons/generic-topic.png')
-				echo "<br><img src='".$topics[$i]['imageUrl']."' id='pic'><br>";
+				echo "<img src='".$topics[$i]['imageUrl']."' id='pic'>";
 			else
-				echo "<br><img src='img/ico.png' width='200' height='200' id='pic'><br>";
+				echo "<img src='img/ico.png' width='200' height='200' id='pic'>";
+			echo "</td>";
 		}
+		echo "</tr></table>";
 	}
 }
 
